@@ -580,7 +580,18 @@ func TestGetLedgerSummary(t *testing.T) {
 			t.Errorf("path = %q, want /api/v3/1/ledger-summary", r.URL.Path)
 		}
 
-		summary := LedgerSummary{Income: 5000, Expense: 3000, Profit: 2000}
+		summary := LedgerSummary{
+			Years: []LedgerSummaryYear{
+				{Year: 2026, Count: 10},
+				{Year: 2025, Count: 50},
+			},
+			Categories: []LedgerSummaryItem{
+				{ID: 1, Name: "Sales", Count: 30},
+			},
+			Labels: []LedgerSummaryItem{
+				{ID: 1, Name: "Tax", Count: 15},
+			},
+		}
 		json.NewEncoder(w).Encode(summary)
 	})
 	defer server.Close()
@@ -590,8 +601,14 @@ func TestGetLedgerSummary(t *testing.T) {
 		t.Fatalf("GetLedgerSummary() error = %v", err)
 	}
 
-	if summary.Profit != 2000 {
-		t.Errorf("Profit = %f, want %f", summary.Profit, 2000.0)
+	if len(summary.Years) != 2 {
+		t.Fatalf("Years count = %d, want %d", len(summary.Years), 2)
+	}
+	if summary.Years[0].Year != 2026 {
+		t.Errorf("Year = %d, want %d", summary.Years[0].Year, 2026)
+	}
+	if summary.Years[0].Count != 10 {
+		t.Errorf("Count = %d, want %d", summary.Years[0].Count, 10)
 	}
 }
 

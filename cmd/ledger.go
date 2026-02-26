@@ -291,7 +291,36 @@ func runLedgerSummary(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	fmt.Printf("Income:  %.2f\n", summary.Income)
-	fmt.Printf("Expense: %.2f\n", summary.Expense)
-	fmt.Printf("Profit:  %.2f\n", summary.Profit)
+	// Display years.
+	if len(summary.Years) > 0 {
+		fmt.Println("Years:")
+		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+		fmt.Fprintln(w, "  YEAR\tCOUNT")
+		for _, y := range summary.Years {
+			fmt.Fprintf(w, "  %d\t%d\n", y.Year, y.Count)
+		}
+		w.Flush()
+	}
+
+	// Display categories.
+	if len(summary.Categories) > 0 {
+		fmt.Println("\nCategories:")
+		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+		fmt.Fprintln(w, "  NAME\tCOUNT")
+		for _, c := range summary.Categories {
+			fmt.Fprintf(w, "  %s\t%d\n", c.Name, c.Count)
+		}
+		w.Flush()
+	}
+
+	// Display labels.
+	if len(summary.Labels) > 0 {
+		fmt.Println("\nLabels:")
+		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+		fmt.Fprintln(w, "  NAME\tCOUNT")
+		for _, l := range summary.Labels {
+			fmt.Fprintf(w, "  %s\t%d\n", l.Name, l.Count)
+		}
+		w.Flush()
+	}
 }

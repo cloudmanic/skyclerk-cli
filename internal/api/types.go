@@ -102,11 +102,24 @@ type LedgerUpdateRequest struct {
 	Note       string  `json:"note,omitempty"`
 }
 
-// LedgerSummary represents a summary of ledger data.
+// LedgerSummary represents a summary of ledger data grouped by year, label, and category.
 type LedgerSummary struct {
-	Income  float64 `json:"income"`
-	Expense float64 `json:"expense"`
-	Profit  float64 `json:"profit"`
+	Years      []LedgerSummaryYear     `json:"years"`
+	Labels     []LedgerSummaryItem     `json:"labels"`
+	Categories []LedgerSummaryItem     `json:"categories"`
+}
+
+// LedgerSummaryYear represents a year entry in the ledger summary.
+type LedgerSummaryYear struct {
+	Year  int `json:"year"`
+	Count int `json:"count"`
+}
+
+// LedgerSummaryItem represents a label or category entry in the ledger summary.
+type LedgerSummaryItem struct {
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Count int    `json:"count"`
 }
 
 // Category represents a transaction category.
