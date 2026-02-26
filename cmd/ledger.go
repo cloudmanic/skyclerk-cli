@@ -69,7 +69,6 @@ func init() {
 	// List flags.
 	ledgerListCmd.Flags().String("limit", "25", "Number of entries to return")
 	ledgerListCmd.Flags().String("page", "1", "Page number")
-	ledgerListCmd.Flags().String("order", "id", "Sort field")
 	ledgerListCmd.Flags().String("sort", "DESC", "Sort direction (ASC or DESC)")
 
 	// Create flags.
@@ -105,13 +104,11 @@ func runLedgerList(cmd *cobra.Command, args []string) {
 
 	limit, _ := cmd.Flags().GetString("limit")
 	page, _ := cmd.Flags().GetString("page")
-	order, _ := cmd.Flags().GetString("order")
 	sort, _ := cmd.Flags().GetString("sort")
 
 	params := map[string]string{
 		"limit": limit,
 		"page":  page,
-		"order": order,
 		"sort":  sort,
 	}
 
