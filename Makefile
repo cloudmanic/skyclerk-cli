@@ -2,7 +2,7 @@
 # Copyright (c) 2026. All rights reserved.
 
 BINARY_NAME=skyclerk
-VERSION ?= dev
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 LDFLAGS=-ldflags "-X github.com/cloudmanic/skyclerk-cli/cmd.Version=$(VERSION)"
 
 ## build: Build the binary for the current platform
