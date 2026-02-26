@@ -83,7 +83,7 @@ func (c *Client) DeleteLedger(id uint) error {
 
 // GetLedgerSummary retrieves a summary of ledger data.
 func (c *Client) GetLedgerSummary(params map[string]string) (*LedgerSummary, error) {
-	data, err := c.get(c.accountPath("/ledger/summary"), params)
+	data, err := c.get(c.accountPath("/ledger-summary"), params)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get ledger summary: %w", err)
 	}
@@ -98,7 +98,7 @@ func (c *Client) GetLedgerSummary(params map[string]string) (*LedgerSummary, err
 
 // GetLedgerPL retrieves the profit and loss summary from ledger data.
 func (c *Client) GetLedgerPL(params map[string]string) (*PnlReport, error) {
-	data, err := c.get(c.accountPath("/ledger/pl"), params)
+	data, err := c.get(c.accountPath("/ledger-pl-summary"), params)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get ledger P&L: %w", err)
 	}

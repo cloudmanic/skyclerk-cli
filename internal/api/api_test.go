@@ -576,8 +576,8 @@ func TestDeleteLedger(t *testing.T) {
 // TestGetLedgerSummary verifies fetching a ledger summary.
 func TestGetLedgerSummary(t *testing.T) {
 	server, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/api/v3/1/ledger/summary" {
-			t.Errorf("path = %q, want /api/v3/1/ledger/summary", r.URL.Path)
+		if r.URL.Path != "/api/v3/1/ledger-summary" {
+			t.Errorf("path = %q, want /api/v3/1/ledger-summary", r.URL.Path)
 		}
 
 		summary := LedgerSummary{Income: 5000, Expense: 3000, Profit: 2000}
@@ -598,8 +598,8 @@ func TestGetLedgerSummary(t *testing.T) {
 // TestGetLedgerPL verifies fetching the ledger P&L.
 func TestGetLedgerPL(t *testing.T) {
 	server, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/api/v3/1/ledger/pl" {
-			t.Errorf("path = %q, want /api/v3/1/ledger/pl", r.URL.Path)
+		if r.URL.Path != "/api/v3/1/ledger-pl-summary" {
+			t.Errorf("path = %q, want /api/v3/1/ledger-pl-summary", r.URL.Path)
 		}
 
 		report := PnlReport{Income: 10000, Expense: 7000, Profit: 3000}
