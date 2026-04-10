@@ -10,20 +10,20 @@ class Skyclerk < Formula
   desc "CLI for the Skyclerk bookkeeping API"
   homepage "https://github.com/cloudmanic/skyclerk-cli"
   license "MIT"
-  version "0.1.5"
+  version "0.1.6"
 
   if OS.mac? && Hardware::CPU.arm?
-    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.5/skyclerk-darwin-arm64"
-    sha256 "29cac8f309769c5022ca7de944b9085b8223c54d81dfb7d29d5ed0882e865c54"
+    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.6/skyclerk-darwin-arm64"
+    sha256 "0a80d3b35ba993a06326e986ebebecffb32770af3c9235895b068088930ae3c1"
   elsif OS.mac? && Hardware::CPU.intel?
-    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.5/skyclerk-darwin-amd64"
-    sha256 "469e3f0c5abaa40e405793386a45c9b884d36dce17f83cb75e539abbd53133f2"
+    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.6/skyclerk-darwin-amd64"
+    sha256 "6ed85f36bd4b5c16016dcac00c1240fa8fdf48c2b355d54dbae85a3141276c01"
   elsif OS.linux? && Hardware::CPU.arm?
-    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.5/skyclerk-linux-arm64"
-    sha256 "4d35123f165dfe4fedc956b4ab104b526fe2ef93b9e5f293a5b61c5118abf03d"
+    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.6/skyclerk-linux-arm64"
+    sha256 "2314d5bbd619bf8c9281784a38625ae213a99443761a0926931ed81e4e36e4e8"
   elsif OS.linux? && Hardware::CPU.intel?
-    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.5/skyclerk-linux-amd64"
-    sha256 "af2569f09b1533d6afa2218561dc94354256a90089a18b01bccd1e6bbb649d2c"
+    url "https://github.com/cloudmanic/skyclerk-cli/releases/download/v0.1.6/skyclerk-linux-amd64"
+    sha256 "47f7d896380863ab740550056ddc341ac2f51a898e0d743d7c99b9021db4f0f1"
   end
 
   def install
