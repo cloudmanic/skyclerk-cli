@@ -77,6 +77,7 @@ func init() {
 	ledgerCreateCmd.Flags().Uint("contact-id", 0, "Contact ID")
 	ledgerCreateCmd.Flags().Uint("category-id", 0, "Category ID")
 	ledgerCreateCmd.Flags().String("note", "", "Transaction note")
+	ledgerCreateCmd.Flags().UintSlice("label-id", nil, "Label ID (can be specified multiple times)")
 	ledgerCreateCmd.MarkFlagRequired("amount")
 	ledgerCreateCmd.MarkFlagRequired("date")
 	ledgerCreateCmd.MarkFlagRequired("contact-id")
@@ -88,6 +89,7 @@ func init() {
 	ledgerUpdateCmd.Flags().Uint("contact-id", 0, "Contact ID")
 	ledgerUpdateCmd.Flags().Uint("category-id", 0, "Category ID")
 	ledgerUpdateCmd.Flags().String("note", "", "Transaction note")
+	ledgerUpdateCmd.Flags().UintSlice("label-id", nil, "Label ID (can be specified multiple times)")
 
 	ledgerCmd.AddCommand(ledgerListCmd)
 	ledgerCmd.AddCommand(ledgerGetCmd)
@@ -200,11 +202,24 @@ func runLedgerCreate(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	// Fetch labels by ID if provided.
+	var labels []api.Label
+	labelIDs, _ := cmd.Flags().GetUintSlice("label-id")
+	for _, lid := range labelIDs {
+		label, err := client.GetLabel(lid)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error fetching label:", err)
+			os.Exit(1)
+		}
+		labels = append(labels, *label)
+	}
+
 	req := &api.LedgerCreateRequest{
 		Amount:   amount,
 		Date:     date,
 		Contact:  *contact,
 		Category: *category,
+		Labels:   labels,
 		Note:     note,
 	}
 
@@ -263,6 +278,19 @@ func runLedgerUpdate(cmd *cobra.Command, args []string) {
 	if cmd.Flags().Changed("note") {
 		note, _ := cmd.Flags().GetString("note")
 		req.Note = note
+	}
+	if cmd.Flags().Changed("label-id") {
+		labelIDs, _ := cmd.Flags().GetUintSlice("label-id")
+		var labels []api.Label
+		for _, lid := range labelIDs {
+			label, err := client.GetLabel(lid)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "Error fetching label:", err)
+				os.Exit(1)
+			}
+			labels = append(labels, *label)
+		}
+		req.Labels = labels
 	}
 
 	ledger, err := client.UpdateLedger(uint(id), req)
