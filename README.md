@@ -11,6 +11,13 @@ brew tap cloudmanic/skyclerk-cli https://github.com/cloudmanic/skyclerk-cli
 brew install skyclerk
 ```
 
+### Updating
+
+```bash
+brew update
+brew upgrade skyclerk
+```
+
 ### From Source
 
 ```bash
