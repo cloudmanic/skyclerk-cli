@@ -9,9 +9,33 @@ import (
 	"strconv"
 	"text/tabwriter"
 
+	"strings"
+
 	"github.com/cloudmanic/skyclerk-cli/internal/api"
 	"github.com/spf13/cobra"
 )
+
+// categoryTypeToAPI maps the human-readable category type from the GET endpoint
+// to the numeric string the POST/PUT ledger endpoint expects.
+func categoryTypeToAPI(t string) string {
+	switch strings.ToLower(t) {
+	case "expense":
+		return "1"
+	case "income":
+		return "2"
+	default:
+		return t
+	}
+}
+
+// formatDateForAPI appends T00:00:00Z to a YYYY-MM-DD date string if it
+// doesn't already contain a time component.
+func formatDateForAPI(date string) string {
+	if !strings.Contains(date, "T") {
+		return date + "T00:00:00Z"
+	}
+	return date
+}
 
 // ledgerCmd is the parent command for ledger management.
 var ledgerCmd = &cobra.Command{
@@ -202,6 +226,9 @@ func runLedgerCreate(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	// Map category type from human-readable to API numeric string.
+	category.Type = categoryTypeToAPI(category.Type)
+
 	// Fetch labels by ID if provided.
 	var labels []api.Label
 	labelIDs, _ := cmd.Flags().GetUintSlice("label-id")
@@ -216,7 +243,7 @@ func runLedgerCreate(cmd *cobra.Command, args []string) {
 
 	req := &api.LedgerCreateRequest{
 		Amount:   amount,
-		Date:     date,
+		Date:     formatDateForAPI(date),
 		Contact:  *contact,
 		Category: *category,
 		Labels:   labels,
@@ -255,7 +282,7 @@ func runLedgerUpdate(cmd *cobra.Command, args []string) {
 	}
 	if cmd.Flags().Changed("date") {
 		date, _ := cmd.Flags().GetString("date")
-		req.Date = date
+		req.Date = formatDateForAPI(date)
 	}
 	if cmd.Flags().Changed("contact-id") {
 		contactID, _ := cmd.Flags().GetUint("contact-id")
@@ -273,6 +300,7 @@ func runLedgerUpdate(cmd *cobra.Command, args []string) {
 			fmt.Fprintln(os.Stderr, "Error fetching category:", err)
 			os.Exit(1)
 		}
+		category.Type = categoryTypeToAPI(category.Type)
 		req.Category = *category
 	}
 	if cmd.Flags().Changed("note") {
