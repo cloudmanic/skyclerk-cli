@@ -84,22 +84,22 @@ type Ledger struct {
 
 // LedgerCreateRequest represents the payload for creating a ledger entry.
 type LedgerCreateRequest struct {
-	Amount     float64 `json:"amount"`
-	Date       string  `json:"date"`
-	ContactID  uint    `json:"contact_id"`
-	CategoryID uint    `json:"category_id"`
-	LabelIDs   []uint  `json:"label_ids,omitempty"`
-	Note       string  `json:"note,omitempty"`
+	Amount   float64  `json:"amount"`
+	Date     string   `json:"date"`
+	Contact  Contact  `json:"contact"`
+	Category Category `json:"category"`
+	Labels   []Label  `json:"labels,omitempty"`
+	Note     string   `json:"note,omitempty"`
 }
 
 // LedgerUpdateRequest represents the payload for updating a ledger entry.
 type LedgerUpdateRequest struct {
-	Amount     float64 `json:"amount,omitempty"`
-	Date       string  `json:"date,omitempty"`
-	ContactID  uint    `json:"contact_id,omitempty"`
-	CategoryID uint    `json:"category_id,omitempty"`
-	LabelIDs   []uint  `json:"label_ids,omitempty"`
-	Note       string  `json:"note,omitempty"`
+	Amount   float64  `json:"amount,omitempty"`
+	Date     string   `json:"date,omitempty"`
+	Contact  Contact  `json:"contact,omitempty"`
+	Category Category `json:"category,omitempty"`
+	Labels   []Label  `json:"labels,omitempty"`
+	Note     string   `json:"note,omitempty"`
 }
 
 // LedgerSummary represents a summary of ledger data grouped by year, label, and category.

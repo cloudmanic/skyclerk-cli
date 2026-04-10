@@ -186,12 +186,26 @@ func runLedgerCreate(cmd *cobra.Command, args []string) {
 	categoryID, _ := cmd.Flags().GetUint("category-id")
 	note, _ := cmd.Flags().GetString("note")
 
+	// Fetch the contact by ID.
+	contact, err := client.GetContact(contactID)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error fetching contact:", err)
+		os.Exit(1)
+	}
+
+	// Fetch the category by ID.
+	category, err := client.GetCategory(categoryID)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error fetching category:", err)
+		os.Exit(1)
+	}
+
 	req := &api.LedgerCreateRequest{
-		Amount:     amount,
-		Date:       date,
-		ContactID:  contactID,
-		CategoryID: categoryID,
-		Note:       note,
+		Amount:   amount,
+		Date:     date,
+		Contact:  *contact,
+		Category: *category,
+		Note:     note,
 	}
 
 	ledger, err := client.CreateLedger(req)
@@ -230,11 +244,21 @@ func runLedgerUpdate(cmd *cobra.Command, args []string) {
 	}
 	if cmd.Flags().Changed("contact-id") {
 		contactID, _ := cmd.Flags().GetUint("contact-id")
-		req.ContactID = contactID
+		contact, err := client.GetContact(contactID)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error fetching contact:", err)
+			os.Exit(1)
+		}
+		req.Contact = *contact
 	}
 	if cmd.Flags().Changed("category-id") {
 		categoryID, _ := cmd.Flags().GetUint("category-id")
-		req.CategoryID = categoryID
+		category, err := client.GetCategory(categoryID)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error fetching category:", err)
+			os.Exit(1)
+		}
+		req.Category = *category
 	}
 	if cmd.Flags().Changed("note") {
 		note, _ := cmd.Flags().GetString("note")

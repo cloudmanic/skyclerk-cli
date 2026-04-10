@@ -515,10 +515,10 @@ func TestCreateLedger(t *testing.T) {
 	defer server.Close()
 
 	ledger, err := client.CreateLedger(&LedgerCreateRequest{
-		Amount:     -25.50,
-		Date:       "2026-02-25",
-		ContactID:  1,
-		CategoryID: 2,
+		Amount:   -25.50,
+		Date:     "2026-02-25",
+		Contact:  Contact{ID: 1, Name: "Test Contact"},
+		Category: Category{ID: 2, Name: "Test Category"},
 	})
 	if err != nil {
 		t.Fatalf("CreateLedger() error = %v", err)
